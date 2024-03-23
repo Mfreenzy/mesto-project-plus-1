@@ -12,7 +12,7 @@ import {
 
 export const getUsers = (req: Request, res: Response) => User.find({})
   .then((users) => res.send({ data: users }))
-  .catch(() => res.status(SERVER_ERROR).send({ message: 'Internal Server Error' }));
+  .catch(() => res.status(SERVER_ERROR).send({ message: 'Внутренняя ошибка сервера' }));
 
 export const findUserById = (req: Request, res: Response) => {
   User.findById(req.params._id)
@@ -20,7 +20,7 @@ export const findUserById = (req: Request, res: Response) => {
       if (!user) {
         return res
           .status(DATA_NOT_FOUND)
-          .send({ message: 'User is not found' });
+          .send({ message: 'Пользователь не найден' });
       }
       return res.send({ data: user });
     })
@@ -28,11 +28,11 @@ export const findUserById = (req: Request, res: Response) => {
       if (error instanceof mongoose.Error.CastError) {
         return res
           .status(VALIDATION_ERROR)
-          .send({ message: 'Data is not correct' });
+          .send({ message: 'Неверные данные' });
       }
       return res
         .status(SERVER_ERROR)
-        .send({ message: 'Internal Server Error' });
+        .send({ message: 'Внутренняя ошибка сервера' });
     });
 };
 
@@ -44,11 +44,11 @@ export const createUser = (req: Request, res: Response) => {
       if (error instanceof mongoose.Error && error.name === 'ValidationError') {
         return res
           .status(VALIDATION_ERROR)
-          .send({ message: 'Data is not correct' });
+          .send({ message: 'Неверные данные' });
       }
       return res
         .status(SERVER_ERROR)
-        .send({ message: 'Internal Server Error' });
+        .send({ message: 'Внутренняя ошибка сервера' });
     });
 };
 
@@ -64,7 +64,7 @@ export const updateUser = (req: IRequest, res: Response) => {
       if (!user) {
         return res
           .status(DATA_NOT_FOUND)
-          .send({ message: 'User is not found' });
+          .send({ message: 'Пользователь не найден' });
       }
       return res.status(REQUEST_SUCCESS).send({ data: user });
     })
@@ -72,11 +72,11 @@ export const updateUser = (req: IRequest, res: Response) => {
       if (error instanceof mongoose.Error && error.name === 'ValidationError') {
         return res
           .status(VALIDATION_ERROR)
-          .send({ message: 'Data is not correct' });
+          .send({ message: 'Неверные данные' });
       }
       return res
         .status(SERVER_ERROR)
-        .send({ message: 'Internal Server Error' });
+        .send({ message: 'Внутренняя ошибка сервера' });
     });
 };
 
@@ -92,7 +92,7 @@ export const updateAvatar = (req: IRequest, res: Response) => {
       if (!user) {
         return res
           .status(DATA_NOT_FOUND)
-          .send({ message: 'User is not found' });
+          .send({ message: 'Пользователь не найден' });
       }
       return res.status(REQUEST_SUCCESS).send({ data: user });
     })
@@ -100,10 +100,10 @@ export const updateAvatar = (req: IRequest, res: Response) => {
       if (error instanceof mongoose.Error && error.name === 'ValidationError') {
         return res
           .status(VALIDATION_ERROR)
-          .send({ message: 'Data is not correct' });
+          .send({ message: 'Неверные данные' });
       }
       return res
         .status(SERVER_ERROR)
-        .send({ message: 'Internal Server Error' });
+        .send({ message: 'Внутренняя ошибка сервера' });
     });
 };
