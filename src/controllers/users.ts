@@ -12,7 +12,7 @@ import {
 
 export const getUsers = (req: Request, res: Response) => User.find({})
   .then((users) => res.send({ data: users }))
-  .catch(() => res.status(SERVER_ERROR).send({ message: 'Внутренняя ошибка сервера' }));
+  .catch(() => res.status(SERVER_ERROR).send({ message: 'На сервере произошла ошибка' }));
 
 export const findUserById = (req: Request, res: Response) => {
   User.findById(req.params._id)
@@ -20,7 +20,7 @@ export const findUserById = (req: Request, res: Response) => {
       if (!user) {
         return res
           .status(DATA_NOT_FOUND)
-          .send({ message: 'Пользователь не найден' });
+          .send({ message: 'Пользователь по указанному _id не найден' });
       }
       return res.send({ data: user });
     })
@@ -28,11 +28,11 @@ export const findUserById = (req: Request, res: Response) => {
       if (error instanceof mongoose.Error.CastError) {
         return res
           .status(VALIDATION_ERROR)
-          .send({ message: 'Неверные данные' });
+          .send({ message: 'Переданы некорректные данные для поиска пользователя' });
       }
       return res
         .status(SERVER_ERROR)
-        .send({ message: 'Внутренняя ошибка сервера' });
+        .send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -44,11 +44,11 @@ export const createUser = (req: Request, res: Response) => {
       if (error instanceof mongoose.Error && error.name === 'ValidationError') {
         return res
           .status(VALIDATION_ERROR)
-          .send({ message: 'Неверные данные' });
+          .send({ message: 'Переданы некорректные данные при создании профиля' });
       }
       return res
         .status(SERVER_ERROR)
-        .send({ message: 'Внутренняя ошибка сервера' });
+        .send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -64,7 +64,7 @@ export const updateUser = (req: IRequest, res: Response) => {
       if (!user) {
         return res
           .status(DATA_NOT_FOUND)
-          .send({ message: 'Пользователь не найден' });
+          .send({ message: 'Пользователь по указанному _id не найден' });
       }
       return res.status(REQUEST_SUCCESS).send({ data: user });
     })
@@ -72,11 +72,11 @@ export const updateUser = (req: IRequest, res: Response) => {
       if (error instanceof mongoose.Error && error.name === 'ValidationError') {
         return res
           .status(VALIDATION_ERROR)
-          .send({ message: 'Неверные данные' });
+          .send({ message: 'Переданы некорректные данные при обновлении профиля' });
       }
       return res
         .status(SERVER_ERROR)
-        .send({ message: 'Внутренняя ошибка сервера' });
+        .send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -92,7 +92,7 @@ export const updateAvatar = (req: IRequest, res: Response) => {
       if (!user) {
         return res
           .status(DATA_NOT_FOUND)
-          .send({ message: 'Пользователь не найден' });
+          .send({ message: 'Пользователь с указанным _id не найден' });
       }
       return res.status(REQUEST_SUCCESS).send({ data: user });
     })
@@ -100,10 +100,10 @@ export const updateAvatar = (req: IRequest, res: Response) => {
       if (error instanceof mongoose.Error && error.name === 'ValidationError') {
         return res
           .status(VALIDATION_ERROR)
-          .send({ message: 'Неверные данные' });
+          .send({ message: 'Переданы некорректные данные при обновлении аватара' });
       }
       return res
         .status(SERVER_ERROR)
-        .send({ message: 'Внутренняя ошибка сервера' });
+        .send({ message: 'На сервере произошла ошибка' });
     });
 };

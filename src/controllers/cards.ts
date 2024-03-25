@@ -16,7 +16,7 @@ export const getCards = async (req: Request, res: Response) => {
     const cards = await Card.find({}).populate('owner');
     return res.status(REQUEST_SUCCESS).send(cards);
   } catch (error) {
-    return res.status(SERVER_ERROR).send({ message: 'Internal Server Error' });
+    return res.status(SERVER_ERROR).send({ message: 'На сервере произошла ошибка' });
   }
 };
 
@@ -30,9 +30,9 @@ export const createCard = async (req: IRequest, res: Response) => {
     if (error instanceof mongoose.Error && error.name === 'ValidationError') {
       return res
         .status(VALIDATION_ERROR)
-        .send({ message: 'Неверные данные' });
+        .send({ message: 'Переданы некорректные данные при создании карточки' });
     }
-    return res.status(SERVER_ERROR).send({ message: 'Внутренняя ошибка сервера' });
+    return res.status(SERVER_ERROR).send({ message: 'На сервере произошла ошибка' });
   }
 };
 
@@ -43,7 +43,7 @@ export const deleteCardById = async (req: IRequest, res: Response) => {
     if (!cardToDelete) {
       return res
         .status(DATA_NOT_FOUND)
-        .send({ message: 'Данные отсутствуют' });
+        .send({ message: 'Карточка с указанным _id не найдена.' });
     }
     if (String(cardToDelete.owner) === ownerId) {
       return res.status(REQUEST_SUCCESS).send(cardToDelete);
@@ -55,9 +55,9 @@ export const deleteCardById = async (req: IRequest, res: Response) => {
     if (error instanceof mongoose.Error.CastError) {
       return res
         .status(VALIDATION_ERROR)
-        .send({ message: 'Неверные данные' });
+        .send({ message: 'Переданы некорректные данные при удалении карточки' });
     }
-    return res.status(SERVER_ERROR).send({ message: 'Внутренняя ошибка сервера' });
+    return res.status(SERVER_ERROR).send({ message: 'На сервере произошла ошибка' });
   }
 };
 
@@ -73,7 +73,7 @@ export const likeCard = (req: IRequest, res: Response) => {
       if (!card) {
         return res
           .status(DATA_NOT_FOUND)
-          .send({ message: 'Карточки не существует' });
+          .send({ message: 'Карточка с указанным _id не найдена' });
       }
       return res.status(REQUEST_SUCCESS).send({ data: card });
     })
@@ -81,11 +81,11 @@ export const likeCard = (req: IRequest, res: Response) => {
       if (error instanceof mongoose.Error.CastError) {
         return res
           .status(VALIDATION_ERROR)
-          .send({ message: 'Неверные данные' });
+          .send({ message: 'Переданы некорректные данные о лайках карточки' });
       }
       return res
         .status(SERVER_ERROR)
-        .send({ message: 'Внутренняя ошибка сервера' });
+        .send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -101,7 +101,7 @@ export const dislikeCard = (req: IRequest, res: Response) => {
       if (!card) {
         return res
           .status(DATA_NOT_FOUND)
-          .send({ message: 'Карточки не существует' });
+          .send({ message: 'Карточка с указанным _id не найдена' });
       }
       return res.status(REQUEST_SUCCESS).send({ data: card });
     })
@@ -109,10 +109,10 @@ export const dislikeCard = (req: IRequest, res: Response) => {
       if (error instanceof mongoose.Error.CastError) {
         return res
           .status(VALIDATION_ERROR)
-          .send({ message: 'Неверные данные' });
+          .send({ message: 'Переданы некорректные данные о лайках карточки' });
       }
       return res
         .status(SERVER_ERROR)
-        .send({ message: 'Внутренняя ошибка сервера' });
+        .send({ message: 'На сервере произошла ошибка' });
     });
 };
