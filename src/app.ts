@@ -2,6 +2,7 @@ import express, { Response } from "express";
 import mongoose from "mongoose";
 import { IRequest } from "./types/types";
 import routes from "./routes/index";
+import { login, createUser } from "./controllers/users";
 
 const app = express();
 const PORT = 3000;
@@ -24,6 +25,10 @@ app.use((req: IRequest, res: Response, next) => {
 
   next();
 });
+
+// Обработчики POST-запросов для '/signin' и '/signup'
+app.post('/signin', login);
+app.post('/signup', createUser);
 
 app.use(routes);
 

@@ -39,7 +39,7 @@ export const createCard = async (req: IRequest, res: Response) => {
 export const deleteCardById = async (req: IRequest, res: Response) => {
   try {
     const ownerId = req.user!._id;
-    const cardToDelete = await Card.findByIdAndRemove(req.params.cardId);
+    const cardToDelete = await Card.findByIdAndDelete(req.params.cardId);
     if (!cardToDelete) {
       return res
         .status(DATA_NOT_FOUND)
