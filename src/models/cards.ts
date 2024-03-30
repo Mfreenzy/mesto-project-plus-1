@@ -4,7 +4,7 @@ export interface ICard {
   name: string;
   link: string;
   owner: ObjectId;
-  likes: string[];
+  likes: ObjectId[];
   createdAt: Date;
 }
 
@@ -18,18 +18,23 @@ const cardSchema = new Schema<ICard>({
   link: {
     type: String,
     required: true,
+    validate: {
+      validator: (link: string) => {
+        /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$/.test(
+          link,
+        );
+      },
+    },
   },
   owner: {
     type: Schema.Types.ObjectId,
-    ref: "user",
+    ref: 'User',
     required: true,
   },
-  likes: [
-    {
-      type: [{ type: Schema.Types.ObjectId, ref: "user" }],
-      default: [],
-    },
-  ],
+  likes: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
   createdAt: {
     type: Date,
     default: Date.now,

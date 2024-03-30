@@ -1,8 +1,13 @@
-import express, { Response } from "express";
+import express, { Response, Request, NextFunction } from "express";
+import { IError } from "./types/types";
+import { SERVER_ERROR } from "./types/status";
 import mongoose from "mongoose";
-import { IRequest } from "./types/types";
+import { errors } from "celebrate";
 import routes from "./routes/index";
 import { login, createUser } from "./controllers/users";
+import auth from "./middlewares/auth";
+import { requestLogger, errorLogger } from "./middlewares/logger";
+import { validateLogin, validateUser } from "./validator/validator";
 
 const app = express();
 const PORT = 3000;
@@ -20,17 +25,30 @@ mongoose
     console.error("Ошибка подключения к MongoDB:", error);
   });
 
-app.use((req: IRequest, res: Response, next) => {
-  req.user = { _id: "65ff0f0def7abb4a3aa6a469" };
-
-  next();
-});
+//Подключение логгеров
+app.use(requestLogger);
+app.use(errorLogger);
 
 // Обработчики POST-запросов для '/signin' и '/signup'
-app.post('/signin', login);
-app.post('/signup', createUser);
+app.post("/signin", validateLogin, login);
+app.post("/signup", validateUser, createUser);
 
+// Авторизация
+app.use(auth);
+
+// Роуты
 app.use(routes);
+
+app.use(errors());
+
+app.use((err: IError, req: Request, res: Response, next: NextFunction) => {
+  const { statusCode = SERVER_ERROR, message } = err;
+
+  res.status(statusCode).send({
+    message:
+      statusCode === SERVER_ERROR ? "Произошла ошибка на сервере" : message,
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`Сервер запущен на порту ${PORT}`);

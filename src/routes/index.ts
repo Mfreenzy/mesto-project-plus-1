@@ -1,12 +1,12 @@
-import { Request, Response, Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import userRouter from './users';
 import cardRouter from './cards';
-import { DATA_NOT_FOUND } from '../types/status';
+import notFoundError from '../errors/NotFoundError';
 
 const routes = Router();
 
 routes.use('/users', userRouter);
 routes.use('/cards', cardRouter);
-routes.use((req: Request, res: Response) => res.status(DATA_NOT_FOUND).send({ message: 'Page Not Found' }));
+routes.use((req: Request, res: Response, next:NextFunction) => next(new notFoundError('Page Not Found')));
 
 export default routes;

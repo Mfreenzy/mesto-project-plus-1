@@ -5,3 +5,7 @@ export interface IRequest extends Request {
     _id: string;
   };
 }
+
+export interface IError extends Error {
+  statusCode: number;
+}
