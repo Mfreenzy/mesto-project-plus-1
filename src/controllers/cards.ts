@@ -120,9 +120,7 @@ export const dislikeCard = (
     .populate(["owner", "likes"])
     .then((card) => {
       if (!card) {
-        return res
-          .status(DATA_NOT_FOUND)
-          .send({ message: "Карточка с указанным _id не найдена" });
+        return next(new notFoundError("Карточка с указанным _id не найдена"));
       }
       return res.status(REQUEST_SUCCESS).send({ data: card });
     })

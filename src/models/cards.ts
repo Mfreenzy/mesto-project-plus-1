@@ -21,24 +21,24 @@ const cardSchema = new Schema<ICard>({
     validate: {
       validator: (link: string) => {
         /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$/.test(
-          link,
+          link
         );
       },
     },
   },
   owner: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: "user",
     required: true,
   },
-  likes: [{
-    type: Schema.Types.ObjectId,
-    ref: 'User'
-  }],
+  likes: {
+    type: [{ type: Schema.Types.ObjectId, ref: "user" }],
+    default: [],
+  },
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
 
-export default model<ICard>('card', cardSchema);
+export default model<ICard>("card", cardSchema);
