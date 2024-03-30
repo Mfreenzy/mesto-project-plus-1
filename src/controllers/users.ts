@@ -4,11 +4,7 @@ import User from "../models/user";
 import { IRequest } from "../types/types";
 import {
   CREATED_SUCCESS,
-  DATA_NOT_FOUND,
   REQUEST_SUCCESS,
-  SERVER_ERROR,
-  VALIDATION_ERROR,
-  UNAUTHORIZED,
 } from "../types/status";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
